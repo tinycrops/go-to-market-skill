@@ -15,7 +15,7 @@ Website: https://medott29--go-to-market-site.modal.run
 ## Install
 
 ```sh
-git clone https://github.com/MeDott29/go-to-market-skill ~/.claude/skills/go-to-market
+git clone https://github.com/tinycrops/go-to-market-skill ~/.claude/skills/go-to-market
 ```
 
 Claude Code picks the skill up from `SKILL.md`. Ask it to "put X up for sale" or "can we charge for X?".
