@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__NAME__ — __TAGLINE__</title>
+<meta name="description" content="__ONE_SENTENCE__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0e10;--panel:#16181c;--panel2:#1c1f24;--line:#2a2e35;--ink:#eceef1;--dim:#9198a3;--accent:#f0a83a;--accent-ink:#1d1305;--bad:#e46d6d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+nav.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.brand{font-family:Fraunces,serif;font-size:22px}nav.top a{color:var(--dim);text-decoration:none;margin-left:18px;font-size:14px}
+.hero{padding:56px 0 28px;text-align:center}
+.hero h1{font-family:Fraunces,serif;font-weight:600;font-size:clamp(34px,6vw,58px);line-height:1.06;margin:0 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--dim);font-size:clamp(16px,2.2vw,19px);max-width:640px;margin:0 auto 26px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:13px 20px;font:600 15px Inter,sans-serif;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:8px 13px;font-size:13px;border-radius:8px}
+.facts{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;color:var(--dim);font-size:14px;margin-top:22px}.facts b{color:var(--ink)}
+section{padding:40px 0}h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(26px,4vw,36px);margin:0 0 8px}
+.lede{color:var(--dim);margin:0 0 24px}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.bal{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:14px}
+.bal b{color:var(--accent)}
+.status{font-size:14px;color:var(--dim);min-height:22px}.status.err{color:var(--bad)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 6px;font-size:17px}.card p{margin:0;color:var(--dim);font-size:14px}.card.feat{border-color:var(--accent)}
+.price{font-family:Fraunces,serif;font-size:38px;margin:6px 0 2px}.price small{font:500 14px Inter;color:var(--dim)}
+details{border-top:1px solid var(--line);padding:14px 0}details summary{cursor:pointer;font-weight:500}details p{color:var(--dim);margin:8px 0 0}
+textarea,input.txt{width:100%;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;font:14px Inter}
+.keybox{font:12px ui-monospace,monospace;color:var(--dim);word-break:break-all}
+footer{color:var(--dim);font-size:13px;padding:30px 0 50px;border-top:1px solid var(--line);margin-top:30px}footer a{color:var(--dim)}
+pre.out{white-space:pre-wrap;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:12px;min-height:40px}
+
+/* Task-led storefront baseline; compose the proof area for each product. */
+:root{--bg:#000;--panel:#0c1015;--panel2:#131922;--line:#303a48;--ink:#d9d9d9;--dim:#a7b2c1;--accent:#64f0f8;--accent-ink:#001417;--bad:#ff9e9e}
+body{font-family:Arial,Helvetica,system-ui,sans-serif}.wrap{max-width:1200px;padding:0 32px}
+nav.top{padding:26px 0;border-bottom:1px solid var(--line)}.brand{font:700 18px Arial,sans-serif;letter-spacing:-.5px}nav.top a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink)}
+.hero{text-align:left;padding:80px 0 64px}.hero h1{font:700 clamp(42px,6.3vw,84px)/.98 Arial,sans-serif;letter-spacing:-.055em;max-width:850px}.hero h1 em{color:var(--accent)}.hero p{margin:24px 0;max-width:560px;font-size:18px;line-height:1.6}.facts{justify-content:flex-start;gap:18px;margin-top:24px}
+.btn{border-radius:4px;min-height:48px;font-family:inherit}.btn.small{min-height:44px}.btn.ghost{border-color:#566273}.btn:hover{filter:brightness(1.12)}
+h2{font:700 clamp(28px,4vw,44px)/1.15 Arial,sans-serif;letter-spacing:-.035em}.price{font-family:inherit;font-weight:700}.tool{border-radius:8px;padding:30px}.card{border-radius:4px;padding:26px}.bal{border-radius:4px}.lede{max-width:680px}.status{color:var(--dim)}
+section{padding:52px 0}textarea,input.txt{font-family:inherit;font-size:16px;border-color:#566273;border-radius:4px}textarea{resize:vertical}summary{min-height:44px;padding:8px 0}a{color:#7f9cff}button,a,input,textarea,summary{touch-action:manipulation}:focus-visible{outline:3px solid #64f0f8;outline-offset:4px}section[id]{scroll-margin-top:24px}
+@media(max-width:600px){.wrap{padding:0 20px}nav.top{gap:12px}.brand{font-size:16px}nav.top a{margin-left:10px;font-size:13px}.hero{padding:48px 0 32px}.hero h1{font-size:clamp(40px,10vw,58px)}.hero p{font-size:16px}.tool{padding:20px}.facts{font-size:13px;gap:10px}section{padding:32px 0}.price small{display:block}.grid3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="top"><div class="brand">__NAME__</div><div><a href="#try">Try it</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></div></nav>
+
+<header class="hero">
+<h1>__HEADLINE_LINE_1__<br><em>__HEADLINE_LINE_2__</em></h1>
+<p>__SUBHEAD: what it does for the customer, in their words, one or two sentences__</p>
+<a class="btn" href="#try">Try it free</a>
+<div class="facts"><span><b>__MEASURED_FACT_1__</b></span><span><b>free</b> to try, no signup</span></div>
+</header>
+
+<section id="try"><div class="tool">
+<div class="bal"><span>You have <b id="credits">…</b> left</span><a href="#pricing">Get more</a></div>
+<!-- TOOL: replace this block with the product's real input/output UI.
+     Build a FormData, call runProduct(fd), handle the Response. -->
+<label for="text">Your input</label><textarea id="text" rows="3" placeholder="Type something"></textarea>
+<div style="margin-top:10px;display:flex;gap:10px;align-items:center"><button class="btn" id="go">Run</button><span class="status" id="status" role="status" aria-live="polite"></span></div>
+<pre class="out" id="out"></pre>
+<!-- /TOOL -->
+</div></section>
+
+<!-- Compose evidence for this product: a real before/after, playable output,
+     readable report specimen or interactive canvas. Delete irrelevant sections.
+     Do not invent metrics, logos or customer quotes. -->
+<section aria-labelledby="proof-heading"><h2 id="proof-heading">__PROOF_HEADING__</h2>
+<p class="lede">__WHAT_THIS_OUTPUT_DEMONSTRATES_AND_ITS_LIMITS__</p>
+<div class="product-proof">__PRODUCT_SPECIFIC_PROOF_REPLACE_WITH_REAL_OUTPUT_UI__</div></section>
+
+<section id="pricing"><h2>Pay as you go</h2><p class="lede">Prepaid and never expire. No subscription.</p>
+<div class="grid3" id="packs"></div>
+<p class="status" style="margin-top:12px">Payments are handled by Stripe. If a run fails, it's refunded automatically.</p></section>
+
+<section id="faq"><h2>Questions</h2>
+<details><summary>What happens to my data?</summary><p>__PRIVACY_TRUTH: only claim what the code does__</p></details>
+<details><summary>Do I need an account?</summary><p>No. Your browser holds an access key. To use it on another device, copy it: <button class="btn ghost small" id="showKey">show my key</button> <span class="keybox" id="keyBox"></span></p>
+<p>Lost your key after buying? Paste your Stripe receipt link or its <code>cs_…</code> id: <label for="recover">Stripe checkout ID</label><input class="txt" id="recover" placeholder="cs_live_…" style="max-width:360px;margin-top:6px"> <button class="btn ghost small" id="recoverBtn">Restore</button></p></details>
+<details><summary>Something broke, or you want a feature?</summary><p><label for="fbMsg">Feedback</label><textarea id="fbMsg" rows="3" placeholder="What happened, or what you'd like it to do"></textarea><label for="fbContact">Contact email (optional)</label><input type="email" class="txt" id="fbContact" placeholder="Email if you'd like a reply (optional)" style="margin-top:6px"><button class="btn ghost small" id="fbBtn" style="margin-top:8px">Send</button> <span class="status" id="fbOk" role="status" aria-live="polite"></span></p></details>
+</section>
+<footer>__NAME__ · <a href="/terms">Terms &amp; privacy</a></footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let KEY=null,CFG=null,warmed=false;
+function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function setCredits(n){$('credits').textContent=n+' '+(n===1?CFG.unit.replace(/s$/,''):CFG.unit)}
+function status(t,err){$('status').textContent=t;$('status').className='status'+(err?' err':'')}
+function warm(){if(warmed)return;warmed=true;fetch('/api/warm',{method:'POST'}).catch(()=>{})}
+// Call the product. Returns the Response on success, null (with a status shown) on failure.
+async function runProduct(fd){
+  if(!KEY||!CFG){status('Still connecting. Please try again in a moment.',true);return null}
+  fd.append('key',KEY);
+  let r;try{r=await fetch('/api/run',{method:'POST',body:fd})}catch(e){status('Connection lost. Your input is still here. Check your balance before retrying.',true);return null}
+  if(!r.ok){const j=await r.json().catch(()=>({}));status(j.detail||'Something went wrong.',true);if(r.status===402)location.hash='pricing';return null}
+  setCredits(+r.headers.get('X-Credits-Left'));status('Done. Used '+r.headers.get('X-Charged')+' '+CFG.unit+'.');return r;
+}
+async function ensureKey(){
+  KEY=load('__SLUG___key');
+  if(KEY){const r=await fetch('/api/balance?key='+KEY);if(r.ok){setCredits((await r.json()).credits);return}}
+  const j=await (await fetch('/api/key',{method:'POST'})).json();KEY=j.key;store('__SLUG___key',KEY);setCredits(j.credits);
+}
+async function buy(pack){
+  const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:KEY,pack})});
+  const j=await r.json();if(j.url)location.href=j.url;else alert(j.detail||'Checkout unavailable right now.');
+}
+async function claim(sid){
+  const r=await fetch('/api/claim?session_id='+encodeURIComponent(sid));const j=await r.json();
+  if(r.ok){KEY=j.key;store('__SLUG___key',KEY);setCredits(j.credits);status('Payment received, thank you! Your '+CFG.unit+' are added.');history.replaceState(null,'','/');location.hash='try'}
+  else status(j.detail||'Could not find that purchase.',true);
+}
+async function init(){
+  CFG=await (await fetch('/api/config')).json();
+  const names={starter:'Starter',studio:'Studio',pro:'Pro'};
+  for(const [id,p] of Object.entries(CFG.packs)){
+    const c=document.createElement('div');c.className='card'+(id==='studio'?' feat':'');
+    c.innerHTML=`<h3>${names[id]||id}</h3><div class="price">$${p.cents/100}<small> · ${p.label}</small></div><p>$${(p.cents/100/p.credits).toFixed(p.cents/p.credits<10?3:2)} per ${CFG.unit.replace(/s$/,'')}</p><button class="btn${id==='studio'?'':' ghost'}" style="margin-top:14px">Buy</button>`;
+    c.querySelector('button').onclick=async()=>{const b=c.querySelector('button');if(!KEY){status('Still connecting. Please try again in a moment.',true);return}b.disabled=true;try{await buy(id)}catch(e){status('Checkout could not connect. Please try again.',true)}finally{b.disabled=false}};$('packs').appendChild(c);
+  }
+  await ensureKey();
+  const q=new URLSearchParams(location.search);if(q.get('paid'))await claim(q.get('paid'));
+}
+$('showKey').onclick=()=>{$('keyBox').textContent=KEY};
+$('recoverBtn').onclick=()=>{const m=$('recover').value.match(/cs_(live|test)_[A-Za-z0-9]+/);if(m)claim(m[0]).catch(()=>status('Could not connect to restore your purchase. Please try again.',true));else status("That doesn't look like a checkout id.",true)};
+$('fbBtn').onclick=async()=>{
+  const message=$('fbMsg').value.trim();if(!message){$('fbOk').textContent='Please describe what happened first.';return}
+  $('fbBtn').disabled=true;$('fbOk').textContent='Sending…';
+  try{const r=await fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,contact:$('fbContact').value})});
+  if(!r.ok)throw new Error('feedback failed');$('fbOk').textContent='Thanks, got it.';$('fbMsg').value=''}
+  catch(e){$('fbOk').textContent='Could not send. Your message is still here; please try again.'}
+  finally{$('fbBtn').disabled=false}
+};
+// TOOL wiring (replace with the product's own)
+$('text').oninput=warm;
+$('go').onclick=async()=>{const fd=new FormData();fd.append('text',$('text').value);status('Working…');const r=await runProduct(fd);if(r)$('out').textContent=JSON.stringify(await r.json(),null,2)};
+init().catch(()=>status("Could not connect. Please reload and try again.",true));
+</script>
+</body>
+</html>

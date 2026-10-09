@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>go-to-market · a Claude Code skill</title>
+<meta name="description" content="A Claude Code skill that takes a prototype to a page a stranger can pay on, in one session: Modal hosting, free trial, Stripe credit packs, verified checkout, stats and a launch kit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single torso column. Black ground, neon outline, square indicator lights. Proof (verify.py output) beside the promise. */
+:root {
+  color-scheme: dark;
+  --ground: #000; --panel: #07080b; --panel2: #0d0f14; --line: #2a2f3d;
+  --text: #d9d9d9; --dim: #8b90a0; --link: #7f9cff;
+  --cyan: #64f0f8; --green: #5affaa; --yellow: #ffe14d; --pink: #f03088; --magenta: #ee25f9;
+  --display: "Chakra Petch", "Arial Narrow", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--ground); color: var(--text); margin: 0; }
+body { font: 17px/1.6 var(--body); padding-inline: 16px; padding-block: 0 72px; }
+a { color: var(--link); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+main { max-width: 1120px; margin-inline: auto; display: grid; gap: 80px; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h1 { font-size: clamp(2.6rem, 7vw, 5rem); line-height: .95; }
+h2 { font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.1; }
+h3 { font-size: 1.08rem; line-height: 1.25; }
+p { margin: 0; max-width: 64ch; }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+.eyebrow { font: 600 .74rem/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+.dim { color: var(--dim); }
+.torso { position: relative; background: var(--panel); border: 1px solid var(--line); padding: 22px; min-width: 0; }
+.torso::after { content: ""; position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--lamp, var(--cyan)); box-shadow: 0 0 8px var(--lamp, var(--cyan)); }
+section { display: grid; gap: 24px; }
+
+header { padding-top: 48px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.hero-copy { display: grid; gap: 22px; }
+.lede { font-size: 1.2rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px; font: 600 .9rem/1 var(--mono); color: #000; background: var(--cyan); border: 1px solid var(--cyan); text-decoration: none; }
+.btn.ghost { color: var(--text); background: transparent; border-color: var(--line); }
+.install { display: flex; gap: 0; border: 1px solid var(--line); max-width: 100%; }
+.install code { flex: 1; min-width: 0; padding: 12px 14px; overflow-x: auto; white-space: nowrap; background: #030405; color: var(--green); }
+.install button { font: 600 .78rem/1 var(--mono); color: var(--text); background: var(--panel2); border: 0; border-left: 1px solid var(--line); padding: 0 14px; min-height: 44px; cursor: pointer; }
+
+.term { font: .82rem/1.65 var(--mono); padding: 18px 20px; overflow-x: auto; white-space: pre; --lamp: var(--green); }
+.term .ok { color: var(--green); } .term .c { color: var(--dim); } .term .y { color: var(--yellow); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
+.grid .torso { display: grid; gap: 8px; align-content: start; }
+
+ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s -1; border: 1px solid var(--line); }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 3.2em minmax(0, 1fr) auto; gap: 14px; padding: 16px 18px; border-bottom: 1px solid #161a22; background: var(--panel); align-items: baseline; }
+ol.steps li:last-child { border-bottom: 0; }
+ol.steps li::before { content: counter(s); font: 700 1.1rem/1 var(--display); color: var(--cyan); }
+ol.steps .t { font: .74rem/1 var(--mono); color: var(--dim); white-space: nowrap; }
+ol.steps p { font-size: .95rem; color: var(--dim); margin-top: 4px; }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.rules .torso { --lamp: var(--pink); display: grid; gap: 6px; }
+
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); }
+.flow div { padding: 18px; background: var(--panel); border-right: 1px solid #161a22; display: grid; gap: 6px; align-content: start; }
+.flow div:last-child { border-right: 0; }
+.flow b { font: 700 .74rem/1 var(--mono); color: var(--yellow); letter-spacing: .1em; }
+.flow p { font-size: .92rem; }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px; }
+ul.plain { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+footer { font: .78rem/1.6 var(--mono); color: var(--dim); display: grid; gap: 6px; max-width: 1120px; margin: 64px auto 0; }
+
+@media (max-width: 860px) {
+  header { grid-template-columns: minmax(0, 1fr); }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .flow div { border-right: 0; border-bottom: 1px solid #161a22; }
+  ol.steps li { grid-template-columns: 2.4em minmax(0, 1fr); }
+  ol.steps .t { grid-column: 2; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="hero-copy">
+      <div class="eyebrow">Claude Code skill · go-to-market</div>
+      <h1>From “works on my box” to “a stranger can pay for it”</h1>
+      <p class="lede">One session turns a prototype into a public page on Modal with a free trial, prepaid credit packs through Stripe Checkout, a checkout proven without charging anyone, live stats and a launch kit. Whether the product is good enough to sell stays your call. The skill gathers the evidence for it.</p>
+      <div class="actions">
+        <a class="btn" href="https://github.com/MeDott29/go-to-market-skill">View on GitHub</a>
+        <a class="btn ghost" href="#steps">See the steps</a>
+      </div>
+      <div class="install" role="group" aria-label="Install command">
+        <code id="cmd">git clone https://github.com/MeDott29/go-to-market-skill ~/.claude/skills/go-to-market</code>
+        <button id="copy" type="button">Copy</button>
+      </div>
+    </div>
+    <div class="torso term" aria-label="What verify.py prints against a deployed storefront"><span class="c"># step 4: prove the storefront can take money
+$ verify.py https://you--slug-web.modal.run slug</span>
+<span class="ok">PASS</span>  page loads
+<span class="ok">PASS</span>  no unfilled __PLACEHOLDERS__ on page
+<span class="ok">PASS</span>  terms load
+<span class="ok">PASS</span>  key issued with free credits
+<span class="ok">PASS</span>  one real run succeeds
+<span class="ok">PASS</span>  balance debited by exactly the charge
+<span class="ok">PASS</span>  checkout returns a Stripe URL
+<span class="ok">PASS</span>  test session expired (can never be paid)
+<span class="ok">PASS</span>  unpaid session refused
+<span class="ok">PASS</span>  bogus session refused
+
+<span class="y">ALL PASS</span>
+<span class="c"># check names are verify.py's own; details per run omitted</span></div>
+  </header>
+
+  <section aria-labelledby="out">
+    <div class="eyebrow">What one run leaves behind</div>
+    <h2 id="out">Everything around the product that makes it purchasable</h2>
+    <div class="grid">
+      <div class="torso"><h3>A public page on Modal</h3><p class="dim">HTTPS URL, GPUs on demand, nothing served from your home network, nothing billed while idle.</p></div>
+      <div class="torso"><h3>Free trial, then credit packs</h3><p class="dim">No accounts or passwords. A browser key holds credits; Stripe Checkout sells packs with inline prices, so there's no dashboard setup.</p></div>
+      <div class="torso"><h3>A checkout proven safely</h3><p class="dim">verify.py opens a real session, confirms an unpaid claim is refused, then expires the session so nobody can pay it.</p></div>
+      <div class="torso"><h3>Live stats</h3><p class="dim">Visitors, runs, checkouts, sales and feedback written to STATS.md every 30 minutes.</p></div>
+      <div class="torso"><h3>A draft demo</h3><p class="dim">Under 45 seconds with sound, rendered from the live product's real output, showing the claim.</p></div>
+      <div class="torso"><h3>A verdict and a launch kit</h3><p class="dim">What it beats, what it loses on, who it is good enough for today, plus draft posts that wait for your go-ahead.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="steps">
+    <div class="eyebrow">The procedure in SKILL.md</div>
+    <h2 id="steps">Nine steps, mostly mechanical</h2>
+    <ol class="steps">
+      <li><div><h3>Orient</h3><p>Check what Stripe has actually seen. Research real customer needs and free alternatives into NEEDS.md before choosing the offer.</p></div><span class="t">5 min</span></li>
+      <li><div><h3>Scaffold</h3><p><code>new_product.py &lt;slug&gt; "&lt;Name&gt;"</code> creates the storefront, metering, stats and the Modal secret. The stub deploys as-is.</p></div><span class="t">2 min</span></li>
+      <li><div><h3>Wire the product</h3><p>Fill <code>estimate_cost</code>, <code>run</code> and the packs. Charge in units the customer sees; debit before the work and refund on failure.</p></div><span class="t"></span></li>
+      <li><div><h3>Design around the customer's decision</h3><p>Write DESIGN.md first: audience, primary task, real proof, phone behaviour. Every claim must trace to a measurement.</p></div><span class="t"></span></li>
+      <li><div><h3>Deploy and verify</h3><p><code>modal deploy web.py</code>, then verify.py. Browser acceptance at 390 px and 1440 px, recorded in DESIGN-QA.md.</p></div><span class="t"></span></li>
+      <li><div><h3>Measure and give a verdict</h3><p>Measure what the page promises on real inputs, compare against the best alternative, and write the readiness verdict.</p></div><span class="t"></span></li>
+      <li><div><h3>Stats, demo, launch kit</h3><p>Stats timer, a sub-45-second demo, and draft posts.</p></div><span class="t"></span></li>
+      <li><div><h3>Hand off and record</h3><p>A handoff note, a memory entry, a commit.</p></div><span class="t"></span></li>
+      <li><div><h3>Ask, then stop</h3><p>Live URL, the verdict in two lines, the demo link, and one question, such as “post it?”</p></div><span class="t"></span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="pay">
+    <div class="eyebrow">references/stripe.md</div>
+    <h2 id="pay">Payment with one restricted key and no webhook</h2>
+    <p class="dim">The key only needs Checkout Sessions read and write. Sales are confirmed by reading the session back when Stripe redirects the buyer.</p>
+    <div class="flow">
+      <div><b>1 · KEY</b><p>The browser holds a random access key. No accounts.</p></div>
+      <div><b>2 · CHECKOUT</b><p>The server opens a session tagged with the key, product and pack.</p></div>
+      <div><b>3 · CLAIM</b><p>On redirect the server reads the session and credits once, only if it's paid and for this product.</p></div>
+      <div><b>4 · RESTORE</b><p>The receipt's session id restores the key on another device.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="rules">
+    <div class="eyebrow">Hard boundaries</div>
+    <h2 id="rules">What the skill will not do</h2>
+    <div class="rules">
+      <div class="torso"><h3>Serve from the house</h3><p class="dim">Home serving lagged the operator's games. Everything public runs on Modal.</p></div>
+      <div class="torso"><h3>Post or contact anyone</h3><p class="dim">No posts, DMs, emails or directory listings without a yes. Drafts stay drafts.</p></div>
+      <div class="torso"><h3>Print an unmeasured number</h3><p class="dim">Every figure on a page is measured and recorded in the product's CLAUDE.md.</p></div>
+      <div class="torso"><h3>Store undisclosed data</h3><p class="dim">The privacy text must say exactly what the code stores.</p></div>
+      <div class="torso"><h3>Pay a live session to test</h3><p class="dim">verify.py creates one and expires it.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="need">
+    <div class="two">
+      <div class="torso" style="--lamp: var(--yellow)">
+        <h2 id="need" style="margin-bottom:14px">What you need</h2>
+        <ul class="plain">
+          <li>Claude Code, with the repo cloned into <code>~/.claude/skills/go-to-market</code>.</li>
+          <li>A Modal account and the <code>modal</code> CLI.</li>
+          <li>A Stripe restricted key with only <em>Checkout Sessions: read + write</em>.</li>
+          <li>Python 3.10+ with <code>requests</code>.</li>
+        </ul>
+      </div>
+      <div class="torso" style="--lamp: var(--magenta)">
+        <h2 style="margin-bottom:14px">Where it stands</h2>
+        <p class="dim">Written on 2026-10-08. Its first run took a voice product to a verified live storefront. The author then chose not to sell it on quality grounds, which is the decision the readiness verdict exists for. Paths in SKILL.md come from the author's machines; change them to match yours.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <span>go-to-market · source at <a href="https://github.com/MeDott29/go-to-market-skill">github.com/MeDott29/go-to-market-skill</a> · this page is served by Modal</span>
+</footer>
+<script>
+document.getElementById('copy').addEventListener('click', async e => {
+  const b = e.currentTarget, t = document.getElementById('cmd').textContent;
+  try { await navigator.clipboard.writeText(t); b.textContent = 'Copied'; }
+  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('cmd')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected'; }
+  setTimeout(() => b.textContent = 'Copy', 1800);
+});
+</script>
+</body>
+</html>
