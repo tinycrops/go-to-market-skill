@@ -36,7 +36,10 @@ code, .mono { font-family: var(--mono); font-size: .88em; }
 .torso::after { content: ""; position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--lamp, var(--cyan)); box-shadow: 0 0 8px var(--lamp, var(--cyan)); }
 section { display: grid; gap: 24px; }
 
-header { padding-top: 48px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.summary { margin: 32px 0 0; display: grid; gap: 10px; }
+.summary video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--line); }
+.summary figcaption { font: .78rem/1.5 var(--mono); color: var(--dim); }
+header { padding-top: 16px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 .hero-copy { display: grid; gap: 22px; }
 .lede { font-size: 1.2rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
@@ -83,6 +86,10 @@ footer { font: .78rem/1.6 var(--mono); color: var(--dim); display: grid; gap: 6p
 </head>
 <body>
 <main>
+  <figure class="summary">
+    <video src="/summary.mp4" poster="/summary.jpg" width="1280" height="720" autoplay muted loop playsinline controls preload="metadata" aria-label="40-second summary: scaffold, deploy, the live storefront running one request, and verify.py passing"></video>
+    <figcaption>A real run, 40 s: the skill scaffolds a throwaway demo product, deploys it to Modal, the live page runs one request (3 credits → 2), and verify.py passes all 11 checks. The demo storefront was taken down afterwards.</figcaption>
+  </figure>
   <header>
     <div class="hero-copy">
       <div class="eyebrow">Claude Code skill · go-to-market</div>
@@ -122,14 +129,14 @@ $ verify.py https://you--slug-web.modal.run slug</span>
       <div class="torso"><h3>Free trial, then credit packs</h3><p class="dim">No accounts or passwords. A browser key holds credits; Stripe Checkout sells packs with inline prices, so there's no dashboard setup.</p></div>
       <div class="torso"><h3>A checkout proven safely</h3><p class="dim">verify.py opens a real session, confirms an unpaid claim is refused, then expires the session so nobody can pay it.</p></div>
       <div class="torso"><h3>Live stats</h3><p class="dim">Visitors, runs, checkouts, sales and feedback written to STATS.md every 30 minutes.</p></div>
-      <div class="torso"><h3>A draft demo</h3><p class="dim">Under 45 seconds with sound, rendered from the live product's real output, showing the claim.</p></div>
+      <div class="torso"><h3>A summary video</h3><p class="dim">At most 45 seconds, cut from the real terminal output and the live page, autoplaying at the top of the product page.</p></div>
       <div class="torso"><h3>A verdict and a launch kit</h3><p class="dim">What it beats, what it loses on, who it is good enough for today, plus draft posts that wait for your go-ahead.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="steps">
     <div class="eyebrow">The procedure in SKILL.md</div>
-    <h2 id="steps">Nine steps, mostly mechanical</h2>
+    <h2 id="steps">Ten steps, mostly mechanical</h2>
     <ol class="steps">
       <li><div><h3>Orient</h3><p>Check what Stripe has actually seen. Research real customer needs and free alternatives into NEEDS.md before choosing the offer.</p></div><span class="t">5 min</span></li>
       <li><div><h3>Scaffold</h3><p><code>new_product.py &lt;slug&gt; "&lt;Name&gt;"</code> creates the storefront, metering, stats and the Modal secret. The stub deploys as-is.</p></div><span class="t">2 min</span></li>
@@ -137,7 +144,8 @@ $ verify.py https://you--slug-web.modal.run slug</span>
       <li><div><h3>Design around the customer's decision</h3><p>Write DESIGN.md first: audience, primary task, real proof, phone behaviour. Every claim must trace to a measurement.</p></div><span class="t"></span></li>
       <li><div><h3>Deploy and verify</h3><p><code>modal deploy web.py</code>, then verify.py. Browser acceptance at 390 px and 1440 px, recorded in DESIGN-QA.md.</p></div><span class="t"></span></li>
       <li><div><h3>Measure and give a verdict</h3><p>Measure what the page promises on real inputs, compare against the best alternative, and write the readiness verdict.</p></div><span class="t"></span></li>
-      <li><div><h3>Stats, demo, launch kit</h3><p>Stats timer, a sub-45-second demo, and draft posts.</p></div><span class="t"></span></li>
+      <li><div><h3>Summary video at the top</h3><p><code>summary_video.py</code> cuts a 45-second-max clip from the captured terminal output and the live page, and the page opens with it. Like the one above.</p></div><span class="t"></span></li>
+      <li><div><h3>Stats, demo, launch kit</h3><p>Stats timer, an optional cut with sound for X, and draft posts.</p></div><span class="t"></span></li>
       <li><div><h3>Hand off and record</h3><p>A handoff note, a memory entry, a commit.</p></div><span class="t"></span></li>
       <li><div><h3>Ask, then stop</h3><p>Live URL, the verdict in two lines, the demo link, and one question, such as “post it?”</p></div><span class="t"></span></li>
     </ol>

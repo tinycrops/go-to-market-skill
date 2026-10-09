@@ -48,6 +48,7 @@ h2{font:700 clamp(28px,4vw,44px)/1.15 Arial,sans-serif;letter-spacing:-.035em}.p
 section{padding:52px 0}textarea,input.txt{font-family:inherit;font-size:16px;border-color:#566273;border-radius:4px}textarea{resize:vertical}summary{min-height:44px;padding:8px 0}a{color:#7f9cff}button,a,input,textarea,summary{touch-action:manipulation}:focus-visible{outline:3px solid #64f0f8;outline-offset:4px}section[id]{scroll-margin-top:24px}
 @media(max-width:600px){.wrap{padding:0 20px}nav.top{gap:12px}.brand{font-size:16px}nav.top a{margin-left:10px;font-size:13px}.hero{padding:48px 0 32px}.hero h1{font-size:clamp(40px,10vw,58px)}.hero p{font-size:16px}.tool{padding:20px}.facts{font-size:13px;gap:10px}section{padding:32px 0}.price small{display:block}.grid3{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+.summary{margin:32px 0 0}.summary video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000;border:1px solid var(--line)}.summary figcaption{margin-top:8px;font-size:13px;opacity:.75}
 </style>
 </head>
 <body>
@@ -59,6 +60,8 @@ section{padding:52px 0}textarea,input.txt{font-family:inherit;font-size:16px;bor
 <p>__SUBHEAD: what it does for the customer, in their words, one or two sentences__</p>
 <a class="btn" href="#try">Try it free</a>
 <div class="facts"><span><b>__MEASURED_FACT_1__</b></span><span><b>free</b> to try, no signup</span></div>
+<figure class="summary" id="summary" hidden><video src="/static/summary.mp4" poster="/static/summary.jpg" width="1280" height="720" autoplay muted loop playsinline controls preload="metadata"></video><figcaption>A real run, recorded from this page and its terminal.</figcaption></figure>
+<script>{const f=document.getElementById("summary"),v=f.querySelector("video");v.addEventListener("loadeddata",()=>f.hidden=false);v.addEventListener("error",()=>f.remove());}</script>
 </header>
 
 <section id="try"><div class="tool">

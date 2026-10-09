@@ -1,5 +1,9 @@
 # go-to-market
 
+[![40-second summary: scaffold, deploy, the live storefront, verify.py passing](site/summary.jpg)](https://medott29--go-to-market-site.modal.run)
+
+*A real run on a throwaway demo product. Click to watch it on the site.*
+
 A Claude Code skill that takes a product, model, tool or prototype from "works on my machine" to
 "a stranger can pay for it" in one session:
 
@@ -27,6 +31,7 @@ Claude Code picks the skill up from `SKILL.md`. Ask it to "put X up for sale" or
   `STRIPE_SECRET_KEY=...`. That is enough for inline-priced checkout, claiming paid sessions and
   expiring test sessions. See `references/stripe.md`.
 - Python 3.10+ with `requests`.
+- For the summary video: Python Playwright, Google Chrome and ffmpeg, plus Playwright's ffmpeg (`python -m playwright install ffmpeg`).
 
 Paths and machine names in `SKILL.md` (7a72, `~/agent-dashboard`) come from the author's setup.
 Change them to match yours.
@@ -40,6 +45,7 @@ Change them to match yours.
 | `scripts/new_product.py` | Scaffolds `~/<slug>-market/` and creates the Modal secret |
 | `scripts/verify.py` | Proves a deployed storefront can take money, then expires the test session |
 | `scripts/stripe_audit.py` | Summarises every Checkout Session the account has seen |
+| `scripts/summary_video.py` | Cuts the summary video for the top of the page from captured terminal logs and the live page |
 | `scripts/stats.py`, `install_timer.sh` | Visitors, runs, checkouts and sales into `STATS.md` every 30 min |
 | `assets/template/` | The storefront: FastAPI on Modal, credit metering, Stripe claim-on-redirect |
 | `site/` | The skill's own website, deployed with `modal deploy site/app.py` |

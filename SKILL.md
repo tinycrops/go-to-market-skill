@@ -1,6 +1,6 @@
 ---
 name: go-to-market
-description: Take any product, model, tool or prototype from "works on 7a72" to "a stranger can pay for it" in one session. That means a public page hosted on Modal (never the home network), a free trial, prepaid credit packs through Stripe Checkout using the existing key, verified checkout, a live stats file, a draft demo video, an honest readiness verdict and a ready-to-post launch kit. Use this whenever Ath wants to sell, monetize, charge for, launch, ship to customers, "get paying customers", "make money from", trial a product on the market, or asks whether something could be sold. Use it even if he only names the product ("put X up for sale", "can we charge for the booth?"), and before building any new payment, checkout or paywall code by hand.
+description: Take any product, model, tool or prototype from "works on 7a72" to "a stranger can pay for it" in one session. That means a public page hosted on Modal (never the home network), a free trial, prepaid credit packs through Stripe Checkout using the existing key, verified checkout, a summary video at the top of the page, a live stats file, an honest readiness verdict and a ready-to-post launch kit. Use this whenever Ath wants to sell, monetize, charge for, launch, ship to customers, "get paying customers", "make money from", trial a product on the market, or asks whether something could be sold. Use it even if he only names the product ("put X up for sale", "can we charge for the booth?"), and before building any new payment, checkout or paywall code by hand.
 ---
 
 # Go to market
@@ -88,23 +88,42 @@ of LAUNCH.md: what it beats, what it loses on, and who it is good enough for tod
 decided not to sell the first product on quality grounds. This verdict exists so he can make
 that call in a minute instead of discovering it after posting.
 
-### 6. Stats, demo, launch kit
+### 6. Summary video at the top of the page (standard)
+Every product page opens with a short summary video, and so does the README of anything
+published to GitHub. A visitor sees the product working before reading a word.
+- Capture real terminal output as you go, from step 1 on: `script -q -c "<command>" <logfile>`
+  for the scaffold, the deploy and verify.py.
+- Once verify.py passes, cut it:
+  ```bash
+  ~/.claude/skills/go-to-market/scripts/summary_video.py ~/<slug>-market --url <live url> \
+      --claim "<one sentence>" --scene "step 4 · verify|verify.py <url> <slug>|<logfile>" [--steps steps.py]
+  ```
+  It writes `static/summary.mp4` and `static/summary.jpg`: a title card, the terminal scenes, the live
+  page driven by Playwright with captions, and an end card. At most 45 s with no audio, so it autoplays muted.
+  `--steps` takes `async def steps(page, cap)`; use it to show the product's real input and output
+  (a before/after on the same input when that is the claim).
+- The template's hero already holds the `<video>`; it stays hidden until the file exists. Redeploy, then
+  rerun verify.py, which reports `summary video at top`.
+- Show only what happened: real output, the real page, captions that describe what is on screen.
+- On GitHub, put `summary.jpg` at the top of the README, linked to the live page.
+
+### 7. Stats, demo, launch kit
 - `scripts/install_timer.sh <slug> ~/<slug>-market` keeps STATS.md fresh every 30 min.
-- A draft demo video under 45 s (X limit), with sound, that *shows* the claim (for example,
+- Optional: a longer cut for X, under 45 s with sound (start from the summary video), that *shows* the claim (for example,
   before/after on the same input), rendered from the live product's real output. Upload it
   with `claude-upload <mp4> "<title>" "<desc>"` (Replay Tube) and note the sha256 prefix.
 - LAUNCH.md: the verdict, demo path and link, an X post for @tinycrops, and 1–2 community
   posts with a reminder to check each one's self-promo rules.
 
-### 7. Hand off and record
+### 8. Hand off and record
 - `~/agent-dashboard/handoffs/YYYY-MM-DD-claude-<slug>-launch.md`: what's live, what was
   measured, the demo (host, path, sha256, preview link), what's weak, and "Codex: do not post or
   contact anyone".
 - Add a short Cluster TOC entry in `~/CLAUDE.md` and a project memory with a MEMORY.md line.
 - `git commit` in the product dir.
 
-### 8. Ask, then stop
-End with: the live URL, the verdict in one or two lines, the demo link, and one clear question,
+### 9. Ask, then stop
+End with: the live URL (summary video at the top), the verdict in one or two lines, the demo link, and one clear question,
 such as "post it on X?". Don't re-ask on every turn after that; wait for his answer.
 
 ## When a trial ends

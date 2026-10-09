@@ -43,6 +43,12 @@ def check(name, cond, detail=""):
 
 r = requests.get(U + "/", timeout=60)
 check("page loads", r.status_code == 200 and "<html" in r.text.lower(), f"{r.status_code} {len(r.text)}B")
+# standard since 2026-10-09: the page opens with a summary video (reported, not counted: it is cut after this passes)
+m = re.search(r'<video[^>]+src="/static/summary\.mp4"', r.text)
+sec = r.text.find("<section")
+rv = requests.get(U + "/static/summary.mp4", timeout=30, stream=True); vid = rv.status_code == 200; rv.close()
+print(f"{'PASS' if m and vid and (sec < 0 or m.start() < sec) else 'TODO'}  summary video at top  "
+      f"{'served' if vid else 'not served yet: run scripts/summary_video.py, then redeploy'}")
 leftover = re.findall(r"__[A-Z0-9_]+(?::[^_]*)?__", r.text)
 check("no unfilled __PLACEHOLDERS__ on page", not leftover, ", ".join(sorted(set(leftover))[:6]))
 r = requests.get(U + "/terms", timeout=30)
