@@ -26,6 +26,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 from pathlib import Path
 
 FPS, W, H, MAX_S = 30, 1280, 720, 45
@@ -39,6 +40,7 @@ ap.add_argument("--scene", action="append", default=[], help='"label|command|log
 ap.add_argument("--steps", help="python file defining async steps(page, cap)")
 ap.add_argument("--end", default="", help="closing card text, e.g. the link")
 ap.add_argument("--chrome", default="/usr/bin/google-chrome")
+ap.add_argument("--out", help="directory for summary.mp4/.jpg (default <product-dir>/static)")
 a = ap.parse_args()
 
 prod = Path(a.product_dir).expanduser().resolve()
@@ -90,6 +92,18 @@ def scene_len(s):
     return len(s["cmd"]) / cps + .35 + min(.4, 4.5 / max(1, n)) * n + 1.8
 
 
+def first_content(mp4, probe_s=8.0):
+    """Seconds until the picture first differs from frame 0 (the blank page before first paint)."""
+    out = subprocess.run(["ffprobe", "-v", "error", "-f", "lavfi", "-i", f"movie={mp4},signalstats",
+                          "-read_intervals", f"%+{probe_s}", "-show_entries", "frame=pts_time:frame_tags=lavfi.signalstats.YAVG",
+                          "-of", "csv=p=0"], capture_output=True, text=True).stdout.split()
+    rows = [tuple(map(float, r.split(",")[:2])) for r in out if r.count(",") >= 1]
+    if not rows:
+        return 0.0
+    y0 = rows[0][1]
+    return next((t for t, y in rows if abs(y - y0) > 6), 0.0)
+
+
 async def default_steps(page, cap):
     await cap("the live page")
     await page.wait_for_timeout(2500)
@@ -112,7 +126,8 @@ async def main(tmp):
     parts = []
 
     async with async_playwright() as p:
-        b = await p.chromium.launch(executable_path=a.chrome)
+        # software WebGL, so three.js / canvas pages record instead of showing black
+        b = await p.chromium.launch(executable_path=a.chrome, args=["--use-gl=angle", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
 
         async def cards(name, kind, i, dur):
             d = tmp / name; d.mkdir()
@@ -133,8 +148,10 @@ async def main(tmp):
 
         ctx = await b.new_context(viewport={"width": W, "height": H}, record_video_dir=str(tmp / "vid"),
                                   record_video_size={"width": W, "height": H})
+        t0 = time.monotonic()            # recording starts with the page; trim everything before it is ready
         pg = await ctx.new_page()
         await pg.goto(a.url, wait_until="networkidle"); await pg.wait_for_timeout(800)
+        lead = time.monotonic() - t0
 
         async def cap(text):
             await pg.evaluate("t=>{let c=document.getElementById('__cap');if(!c){c=document.createElement('div');c.id='__cap';"
@@ -144,15 +161,23 @@ async def main(tmp):
         await steps(pg, cap)
         v = pg.video; await ctx.close()
         live = tmp / "c_live.mp4"
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "0.8", "-i", await v.path(), "-vf",
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{lead:.2f}", "-i", await v.path(), "-vf",
                         f"fps={FPS},scale={W}:{H}", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", str(live)], check=True)
+        skip = first_content(live)       # drop the blank frames before the page's first paint
+        if skip > 0:
+            trimmed = tmp / "c_live_t.mp4"
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{skip:.2f}", "-i", str(live), "-c:v", "libx264",
+                            "-pix_fmt", "yuv420p", "-crf", "20", str(trimmed)], check=True)
+            live = trimmed
         parts.append(live)
         await cards("d_end", "end", 0, 3.5)
         await b.close()
 
     lst = tmp / "list.txt"
     lst.write_text("".join(f"file '{x}'\n" for x in parts))
-    mp4, jpg = prod / "static" / "summary.mp4", prod / "static" / "summary.jpg"
+    out = Path(a.out).expanduser() if a.out else prod / "static"
+    out.mkdir(parents=True, exist_ok=True)
+    mp4, jpg = out / "summary.mp4", out / "summary.jpg"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v", "libx264",
                     "-pix_fmt", "yuv420p", "-crf", "23", "-preset", "slow", "-movflags", "+faststart", "-an", str(mp4)], check=True)
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(mp4)],
