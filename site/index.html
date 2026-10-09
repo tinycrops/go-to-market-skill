@@ -23,7 +23,7 @@ html, body { background: var(--ground); color: var(--text); margin: 0; }
 body { font: 17px/1.6 var(--body); padding-inline: 16px; padding-block: 0 72px; }
 a { color: var(--link); text-underline-offset: 3px; }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
-main { max-width: 1120px; margin-inline: auto; display: grid; gap: 80px; }
+main { max-width: 1120px; margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 80px; }
 h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
 h1 { font-size: clamp(2.6rem, 7vw, 5rem); line-height: .95; }
 h2 { font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.1; }
