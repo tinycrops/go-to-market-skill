@@ -9,9 +9,9 @@ import modal
 HERE = Path(__file__).parent
 image = (modal.Image.from_registry("python:3.11-slim-bookworm")
          .pip_install("fastapi[standard]==0.115.6")
-         .add_local_file(HERE / "index.html", "/site/index.html")
-         .add_local_file(HERE / "summary.mp4", "/site/summary.mp4")
-         .add_local_file(HERE / "summary.jpg", "/site/summary.jpg"))
+         .add_local_file(HERE / "index.html", "/site/index.html", copy=True)
+         .add_local_file(HERE / "summary.mp4", "/site/summary.mp4", copy=True)
+         .add_local_file(HERE / "summary.jpg", "/site/summary.jpg", copy=True))
 app = modal.App("go-to-market", image=image)
 
 

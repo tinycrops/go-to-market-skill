@@ -33,6 +33,13 @@ CLI: `~/.venv-modal/bin/modal` (v1.5.5, profile `medott29`) on 7a72.
 6. Bake model weights into the image with `.run_function(prefetch)` so a cold start
    downloads nothing.
 
+7. After `modal deploy`, warm containers from the previous version can keep answering for
+   minutes, so a page read once at startup stays stale. Stop them so new ones start:
+   `modal container list --json`, then `modal container stop --yes <id>` for each of the app's containers.
+   Bake static files in with `add_local_file(..., copy=True)`.
+8. Playwright page recording (summary_video.py) needs its own ffmpeg build:
+   `python -m playwright install ffmpeg`, once per machine.
+
 ## Useful commands
 - deploy: `modal deploy web.py` (prints the URL)
 - logs: `modal app logs <slug>-web`

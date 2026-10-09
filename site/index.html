@@ -40,7 +40,8 @@ section { display: grid; gap: 24px; }
 .summary video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--line); }
 .summary figcaption { font: .78rem/1.5 var(--mono); color: var(--dim); }
 header { padding-top: 16px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px; align-items: start; }
-.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; min-width: 0; }
+section { grid-template-columns: minmax(0, 1fr); }
 h1 { overflow-wrap: break-word; }
 .lede { font-size: 1.2rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
